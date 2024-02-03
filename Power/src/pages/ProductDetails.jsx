@@ -1,8 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { NavLink, useParams } from "react-router-dom";
 import axios from "axios";
+import { useCart } from "../components/cartContext";
 
 function ProductDetails() {
+
+  const {productId} = useParams();
+
+  const {addToCart} = useCart();
+
+
   const [product, setProduct] = useState(null);
   const [loading, setLoading] = useState(false);
   const { id } = useParams();
@@ -22,6 +29,12 @@ function ProductDetails() {
     getProducts();
    
   }, []);
+
+  const handleClick = () => { 
+    addToCart(product);
+  }
+
+
 
   return(
     <div>
@@ -53,9 +66,11 @@ function ProductDetails() {
         <p className="product-price">
         { product?.price}:-
         </p>
-        <NavLink to="/cart"> 
-        <button className="buy-btn" >Lägg till i korgen</button> 
-        </NavLink>
+        {/* <NavLink to="/ShoppingCart">  */}
+        {/* <button className="buy-btn" onClick={() => addToCart(product) } >Lägg till i korgen</button> */}
+
+        <button className="buy-btn" onClick={() => { addToCart(product); window.alert('Produkten har lagts till i din kundvagn!'); } } >Lägg till i korgen</button>
+         
       </div>
   )
     } 

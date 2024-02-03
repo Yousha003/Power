@@ -1,4 +1,6 @@
+import { FaShoppingCart } from "react-icons/fa";
 import { Link, NavLink } from "react-router-dom";
+
 
 export const Navbar = () => {
   return (
@@ -12,13 +14,13 @@ export const Navbar = () => {
 
           <li>
             <NavLink to="/shop" className="nav-link">
-              Shop
+              Hem
             </NavLink>
           </li>
-          
+
           <li>
-            <NavLink to="/" className="nav-link">
-              Home
+            <NavLink to="/ShoppingCart" className="nav-link">
+            <FaShoppingCart />
             </NavLink>
           </li>
 

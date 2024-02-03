@@ -1,22 +1,41 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import axios from "axios";
 
-function ContactForm() {
+const About = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [confirmation, setConfirmation] = useState("");
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(`Name: ${name}, Email: ${email}, Message: ${message}`);
+
+    const formData = {
+      name: name,
+      email: email,
+      message: message,
+    };
+
+    try {
+      const res = await axios.post(
+        "https://js2-ecommerce-api.vercel.app/api/messages",
+        formData
+      );
+      console.log(res);
+
+      setName("");
+      setEmail("");
+      setMessage("");
+      setConfirmation("Tack för ditt meddelande! Vi återkommer så snart vi kan.");
+    } catch (error) {
+      console.error("Error sending message:", error);
+      setConfirmation("Error sending message. Please try again.");
+    }
   };
 
   return (
     <div>
-      
-
       <h1 className="form-title">Kontakta oss</h1>
-
       <form className="form" onSubmit={handleSubmit}>
         <label className="name">
           Namn:
@@ -29,53 +48,29 @@ function ContactForm() {
         </label>
 
         <label className="email">
-          E-post:
-          <input
-            type="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            required
-          />
+        E-post:
+        <input
+          type="email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          required
+        />
         </label>
-
         <label className="message">
-          Meddelande:
-          <textarea
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-            required
-          />
+        Meddelande:
+        <textarea
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          required
+        />
         </label>
 
-        <button className="send-btn" type="submit" >
-          <NavLink to="/confirmed">Skicka</NavLink>
-        </button>
+        <button className="send-btn" type="submit">Skicka</button>
 
       </form>
-
-
-      <div className="about">
-        <h1 className="about-title">Om oss</h1>
-        <p className="about-text">
-          Vi är en ledande leverantör av elektronik. Vårt uppdrag är att erbjuda
-          högkvalitativa, prisvärda produkter som förbättrar och förenklar
-          vardagen. Vi är stolta över att erbjuda ett brett sortiment av
-          produkter som passar alla behov och budgetar. Vi är engagerade i att
-          erbjuda exceptionell kundservice och ett brett sortiment av produkter
-          för att möta våra kunders olika behov. Vårt team är dedikerat till att
-          ge dig den bästa möjliga upplevelsen när du handlar hos oss. Vi ser
-          fram emot att betjäna dig! Grundat 2022, har vi snabbt vuxit och
-          blivit ett betrodd namn inom elektronikindustrin. Vi är engagerade i
-          att erbjuda exceptionell kundservice och ett brett sortiment av
-          produkter för att möta våra kunders olika behov. Vårt team är
-          dedikerat till att ge dig den bästa möjliga upplevelsen när du handlar
-          hos oss. Vi ser fram emot att betjäna dig!
-        </p>
-      </div>
-      
+      {confirmation && <p>{confirmation}</p>}
     </div>
-
-    
   );
-}
-export default ContactForm;
+};
+
+export default About;
